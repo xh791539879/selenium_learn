@@ -6,11 +6,11 @@
 from webdriver_helper import *
 from selenium.webdriver.chrome.options import Options
 
-class base:
-    def get_url(self):
-        chrome_options = Options()
-        chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9527")
-        self.driver = get_webdriver(options=chrome_options)
+class BasePage:
+    def open_browser(self):
+        self.chrome_options = Options()
+        self.chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9527")
+        self.driver = get_webdriver(options=self.chrome_options)
         self.driver.implicitly_wait(5)  # 隐性等待
 
     def get(self, url):
