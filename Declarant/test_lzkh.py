@@ -11,19 +11,22 @@ class TestLzkh(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.driver = get_webdriver()
         cls.driver.maximize_window()
-        cls.driver.implicitly_wait(5) # 隐性等待
+        cls.driver.implicitly_wait(5)  # 隐性等待
 
     def setUp(self) -> None:
         pass
+
     def tearDown(self) -> None:
         time.sleep(5)
+
     def test_login(self):
-        lp =LoginPage(self.driver)
+        lp = LoginPage(self.driver)
         lp.login_sgw("hnssgw", "123456")  # 先登录
         sleep(5)
+
     def test_lzkh(self):
         lp = LoginPage(self.driver)
         lp.login_sgw("hnssgw", "123456")  # 先登录
         sleep(5)
         et = LzkhPage(self.driver)
-        et.edit_lzkh()
+        et.edit_lzkh(js)

@@ -1,12 +1,9 @@
-import time
-
 from selenium.webdriver.common.by import By
-from webdriver_helper import get_webdriver
-
 from base.base_page import BasePage
 
 
 class LoginPage(BasePage):
+
     # 将页面中会用到的元素统一封装在这里
     current_url = "http://192.168.0.40:18400/index#/login"  # url
     username_loc = (By.ID, "name")  # 用户名输入框
