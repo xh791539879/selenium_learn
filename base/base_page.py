@@ -2,9 +2,13 @@
 封装selenium中的方法
 #基础层
 """
+from time import sleep
+
+from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_helper import *
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import ActionChains
 
 
 class BasePage:
@@ -37,3 +41,11 @@ class BasePage:
     def remove_readonly(self,args):
         a = self.locator_element(args)
         self.driver.execute_script('arguments[0].removeAttribute(\"readonly\")',a)
+    def click_keys(self):
+        action_chains = ActionChains(self.driver)
+        action_chains.key_up(Keys.ENTER).perform()
+        sleep(1)
+        action_chains.key_down(Keys.ENTER).perform()
+    def remove_att(self,args):
+        self.driver.execute_script('',args)
+

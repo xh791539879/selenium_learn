@@ -1,7 +1,5 @@
 import time
-import unittest
 from time import sleep
-import pytest as pytest
 from webdriver_helper import get_webdriver
 from pageobject.login_page import LoginPage
 
@@ -10,13 +8,13 @@ from pageobject.login_page import LoginPage
 """
 
 
-class TestInfor(unittest.TestCase):
-    def setUp(self) -> None:
+class TestSsgw:
+    def setup_method(self):
         self.driver = get_webdriver()
         self.driver.maximize_window()
         self.driver.implicitly_wait(5)  # 隐性等待
 
-    def tearDown(self) -> None:
+    def teardown_method(self):
         time.sleep(5)
 
     def test_login(self):
