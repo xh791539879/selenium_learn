@@ -1,13 +1,14 @@
+"""
+省少工委发布考核功能
+"""
 import os
 import time
-
-from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 from common.makedata import DateTime
 
 
-class LzkhPage(BasePage): # 定位需要的元素
+class LzkhPage(BasePage):  # 定位需要的元素
     current_url = "http://192.168.0.40:18400/index#/assessment/year"  # url
     fbkh_btn = (By.CLASS_NAME, "ant-btn ant-btn-danger")  # 发布考核按钮
     selet_btn = (By.CLASS_NAME, "ant-btn ant-btn-primary")  # 查询按钮
@@ -31,10 +32,10 @@ class LzkhPage(BasePage): # 定位需要的元素
     upload_btn = (By.XPATH, "//span[@class='ant-upload']//button[@class='ant-btn']")  # 选择文件
     tel_input = (By.XPATH, "//input[@placeholder='请输入咨询电话']")  # 咨询电话
     ok_btn = (By.XPATH, "//div[@class='ant-modal-footer']//div//button[@class='ant-btn ant-btn-primary']")
-    js = (By.XPATH,"//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
-    year1 = (By.XPATH,"//li[contains(text(),'2023')]")
+    js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
+    year1 = (By.XPATH, "//li[contains(text(),'2023')]")
 
-    def publish_lzkh(self): # 发布履职考核
+    def publish_lzkh(self):  # 发布履职考核
         self.get(self.current_url)
         time.sleep(1)
         self.click(self.publish_btn)  # 点击发布考核按钮
@@ -54,8 +55,4 @@ class LzkhPage(BasePage): # 定位需要的元素
         self.send_keys(self.tel_input, "2795456")
         time.sleep(1)
         self.click(self.ok_btn)
-    def select_lzkh(self):
-        self.remove_att('arguments[0].removeAttribute(\"display: none\")',self.js)
-        self.click(self.year1)
-
 
