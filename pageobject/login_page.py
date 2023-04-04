@@ -9,6 +9,7 @@ class LoginPage(BasePage):
     username_loc = (By.ID, "name")  # 用户名输入框
     password_loc = (By.ID, "password")  # 密码
     login_sub = (By.XPATH, "//button[@class='ant-btn ant-btn-primary login-btn ant-btn-lg']")  # 登录按钮
+    locator = (By.CLASS_NAME, "name1")
 
     # 将页面中会用到的动作统一封装在这里
     def login_sgw(self, username, password):  # 用户名\密码不写死,在用力层调用
@@ -16,3 +17,6 @@ class LoginPage(BasePage):
         self.send_keys(self.username_loc, username)
         self.send_keys(self.password_loc, password)
         self.click(self.login_sub)
+
+
+
