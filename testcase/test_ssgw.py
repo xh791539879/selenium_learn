@@ -1,38 +1,50 @@
 """
 省少工委测试用例
 """
-import time
-from time import sleep
 
+from time import sleep
 import allure
-from selenium.webdriver.common.by import By
+import pytest
 
 import base.base_page
 from pageobject.login_page import LoginPage
 from pageobject.lzkh_page import LzkhPage
-from selenium.webdriver.support import expected_conditions as EC
 
 
+@allure.feature('登录模块')
 class TestSsgw:
-
-    def test_login(self):  # 登录
+    @pytest.mark.usefixtures("login_assert") #调用断言
+    @allure.story('正例:登录成功')
+    def test_login_success(self):  # 登录
         # 操作主体
         self.driver = base.base_page.driver
         lp = LoginPage()
         lp.login_sgw("hnssgw", "123456")  # 先登录
-        # 断言主体
-        text = self.driver.find_element(By.CLASS_NAME, "name").text
-        try:
-            assert text == "hhhh"
-        except Exception as msg:
-            print(u"异常原因%s" % msg)  # 打印异常原因
-            # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
-            file_path = './error_image/登录失败截图.png'
-            self.driver.save_screenshot(file_path)
-            # 将截图展示在allure测试报告上
-            with open(file_path, mode="rb") as f:
-                allure.attach(f.read(), "登录失败截图.png", allure.attachment_type.PNG)
-            raise  # 抛出异常,否则用例会被判断为pass
+
+    @pytest.mark.usefixtures("login_assert")  # 调用断言
+    @allure.story('反例:丢失用户名')
+    def test_login_lostname(self):  # 登录
+        # 操作主体
+        self.driver = base.base_page.driver
+        lp = LoginPage()
+        lp.login_sgw("", "123456")  # 先登录
+
+    @pytest.mark.usefixtures("login_assert")  # 调用断言
+    @allure.story('反例:丢失密码')
+    def test_login_lostpassword(self):  # 登录
+        # 操作主体
+        self.driver = base.base_page.driver
+        lp = LoginPage()
+        lp.login_sgw("hnssgw", "")  # 先登录
+
+    @pytest.mark.usefixtures("login_assert")  # 调用断言
+    @allure.story('反例:非本角色')
+    def test_login_not(self):  # 登录
+        # 操作主体
+        self.driver = base.base_page.driver
+        lp = LoginPage()
+        lp.login_sgw("zzssgw", "123456")  # 先登录
+
 
     def test_lzkh(self):  # 发布考核
         lp = LoginPage()
