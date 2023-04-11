@@ -1,54 +1,53 @@
 """
 省少工委测试用例
 """
-
+import time
 from time import sleep
 import allure
 import pytest
+from selenium.webdriver.common.by import By
 
 import base.base_page
 from pageobject.login_page import LoginPage
 from pageobject.lzkh_page import LzkhPage
 
+test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
+                   ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
+
+driver = base.base_page.driver
+
 
 @allure.feature('登录模块')
 class TestSsgw:
-    @pytest.mark.usefixtures("login_assert") #调用断言
-    @allure.story('正例:登录成功')
-    def test_login_success(self):  # 登录
-        # 操作主体
-        self.driver = base.base_page.driver
-        lp = LoginPage()
-        lp.login_sgw("hnssgw", "123456")  # 先登录
-
     @pytest.mark.usefixtures("login_assert")  # 调用断言
-    @allure.story('反例:丢失用户名')
-    def test_login_lostname(self):  # 登录
-        # 操作主体
-        self.driver = base.base_page.driver
+    @allure.story('登录测试用例')
+    @pytest.mark.parametrize("username,password", test_login_data)  # 将数据传入测试用例
+    def test_login(self, username, password, log):  # 登录
         lp = LoginPage()
-        lp.login_sgw("", "123456")  # 先登录
+        lp.login_sgw(username, password)  # 传入参数
+        try:
+            text = driver.find_element(By.CLASS_NAME, "name").text
+            assert text == "河南省少工委"
+            log.logger.info("用户名{0}，密码{1}登录成功".format(username, password))
+        except Exception as msg:
+            msg = "用户名{0}，密码{1}断言失败，返回text:{2}".format(username, password, text)
+            log.logger.error(msg)
+            now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+            print(u"异常原因%s" % msg)  # 打印异常原因
+            imgname = now + "异常截图.png"
+            # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
+            file_path = 'error_image/login_image/' + imgname
+            driver.save_screenshot(file_path)
+            # 将截图展示在allure测试报告上
+            with open(file_path, mode="rb") as f:
+                allure.attach(f.read(), imgname, allure.attachment_type.PNG)
+            raise  # 抛出异常,否则用例会被判断为pass
+        finally:
+            log.logger.info("用户名{0}，密码{1}登录验证完成".format(username, password))
 
-    @pytest.mark.usefixtures("login_assert")  # 调用断言
-    @allure.story('反例:丢失密码')
-    def test_login_lostpassword(self):  # 登录
-        # 操作主体
-        self.driver = base.base_page.driver
-        lp = LoginPage()
-        lp.login_sgw("hnssgw", "")  # 先登录
-
-    @pytest.mark.usefixtures("login_assert")  # 调用断言
-    @allure.story('反例:非本角色')
-    def test_login_not(self):  # 登录
-        # 操作主体
-        self.driver = base.base_page.driver
-        lp = LoginPage()
-        lp.login_sgw("zzssgw", "123456")  # 先登录
-
-
-    def test_lzkh(self):  # 发布考核
-        lp = LoginPage()
-        lp.login_sgw("hnssgw", "123456")  # 先登录
-        sleep(5)
-        et = LzkhPage()
-        et.publish_lzkh()
+    # def test_lzkh(self):  # 发布考核
+    #     lp = LoginPage()
+    #     lp.login_sgw("hnssgw", "123456")  # 先登录
+    #     sleep(5)
+    #     et = LzkhPage()
+    #     et.publish_lzkh()
