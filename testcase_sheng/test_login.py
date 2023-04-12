@@ -1,25 +1,22 @@
 """
-省少工委测试用例
+省少工委登录测试用例
 """
 import time
-from time import sleep
 import allure
 import pytest
 from selenium.webdriver.common.by import By
-
 import base.base_page
 from pageobject.login_page import LoginPage
-from pageobject.lzkh_page import LzkhPage
+
+
+driver = base.base_page.driver
 
 test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
                    ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
 
-driver = base.base_page.driver
-
 
 @allure.feature('登录模块')
-class TestSsgw:
-    @pytest.mark.usefixtures("login_assert")  # 调用断言
+class TestLogin:
     @allure.story('登录测试用例')
     @pytest.mark.parametrize("username,password", test_login_data)  # 将数据传入测试用例
     def test_login(self, username, password, log):  # 登录
@@ -45,9 +42,4 @@ class TestSsgw:
         finally:
             log.logger.info("用户名{0}，密码{1}登录验证完成".format(username, password))
 
-    # def test_lzkh(self):  # 发布考核
-    #     lp = LoginPage()
-    #     lp.login_sgw("hnssgw", "123456")  # 先登录
-    #     sleep(5)
-    #     et = LzkhPage()
-    #     et.publish_lzkh()
+

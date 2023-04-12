@@ -6,7 +6,7 @@ import time
 from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 from common.makedata import DateTime
-
+now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
 
 class LzkhPage(BasePage):  # 定位需要的元素
     current_url = "http://192.168.0.40:18400/index#/assessment/year"  # url
@@ -35,24 +35,26 @@ class LzkhPage(BasePage):  # 定位需要的元素
     js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
     year1 = (By.XPATH, "//li[contains(text(),'2023')]")
 
-    def publish_lzkh(self):  # 发布履职考核
+    def publish_lzkh(self,kh_name,starttime,endtime,telephone):  # 发布履职考核
+
+
         self.get(self.current_url)
         time.sleep(1)
         self.click(self.publish_btn)  # 点击发布考核按钮
         self.click(self.year_click)  # 点击考核年度选择框
         time.sleep(5)  # 手动选择年度
-        self.send_keys(self.name_input, '测试自动输入考核名称')  # 输入考核名称
+        self.send_keys(self.name_input, kh_name)  # 输入考核名称
         self.click(self.time_select)  # 点击时间选择控件
         time.sleep(2)
-        self.send_keys(self.start_time_input, DateTime.get_current_date())  # 调用方法输入当前年-月-日
+        self.send_keys(self.start_time_input, starttime)  # 调用方法输入当前年-月-日
         time.sleep(1)
-        self.send_keys(self.end_time_input, "2023-04-01")
+        self.send_keys(self.end_time_input, endtime)
         self.click_keys()  # 单击键盘回车键,让时间控件收回
         self.click(self.upload_btn)
         time.sleep(3)
         os.system("C:/Users/admin/Desktop/upload.exe")  # 调用本地Autolt生成的exe文件进行上传文件操作
         time.sleep(2)
-        self.send_keys(self.tel_input, "2795456")
+        self.send_keys(self.tel_input, telephone)
         time.sleep(1)
         self.click(self.ok_btn)
 
