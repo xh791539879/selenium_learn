@@ -49,3 +49,14 @@ class BasePage:
 
     def remove_att(self, args):
         self.driver.execute_script('', args)
+
+    def get_table_content(self,args,args2):
+        arr = []
+        arr1 = []
+        table = self.locator_element(args)
+        table_tr_list = table.find_elements(args2)
+        for tr in table_tr_list:
+            arr1 = tr.text.split(" ")
+            print(arr1)
+            arr.append(arr1)
+        return arr
