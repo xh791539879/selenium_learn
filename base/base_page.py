@@ -3,13 +3,16 @@
 #基础层
 """
 from time import sleep
+
+import selenium
+from selenium.common import exceptions
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_helper import *
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import ActionChains
 
 driver = get_webdriver()
+
 
 class BasePage:
     def __init__(self):  #
@@ -50,7 +53,7 @@ class BasePage:
     def remove_att(self, args):
         self.driver.execute_script('', args)
 
-    def get_table_content(self,args,args2):
+    def get_table_content(self, args, args2):
         arr = []
         arr1 = []
         table = self.locator_element(args)
@@ -60,3 +63,4 @@ class BasePage:
             print(arr1)
             arr.append(arr1)
         return arr
+
