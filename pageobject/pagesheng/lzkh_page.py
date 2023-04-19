@@ -32,8 +32,6 @@ class LzkhPage(BasePage):  # 定位需要的元素
     ok_btn = (By.XPATH, "//div[@class='ant-modal-footer']//div//button[@class='ant-btn ant-btn-primary']")
     js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
     year1 = (By.XPATH, "//li[contains(text(),'2023')]")
-    table = (By.XPATH,"//tbody[@class='ant-table-tbody']") #定位整个列表
-    tr = (By.TAG_NAME,"tr")
 
     def publish_lzkh(self, kh_name, starttime, endtime, telephone):  # 发布履职考核
 
@@ -58,11 +56,11 @@ class LzkhPage(BasePage):  # 定位需要的元素
         time.sleep(1)
         self.click(self.ok_btn)
 
-    def select_by_name(self,name_select): #根据考核名称筛选
+    def select_by_name(self, name_select): #根据考核名称筛选
         self.get(self.current_url)
-        self.send_keys(self.name_select,name_select)
+        self.send_keys(self.name_select, name_select)
         time.sleep(2)
         self.click(self.select_btn)
         time.sleep(2)
-        self.get_table_content(self.table,self.tr)
+
 
