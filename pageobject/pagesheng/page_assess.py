@@ -7,17 +7,18 @@ from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 
 
-class LzkhPage(BasePage):  # 定位需要的元素
+class PageAssess(BasePage):  # 定位需要的元素
     current_url = "http://192.168.0.40:18400/index#/assessment/year"  # url
-    select_btn = (By.XPATH, "/html[1]/body[1]/div[1]/section[1]/section[1]/main[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[1]/div[4]/span[1]/button[1]")  # 查询按钮
+    select_btn = (By.XPATH,
+                  "/html[1]/body[1]/div[1]/section[1]/section[1]/main[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[1]/div[4]/span[1]/button[1]")  # 查询按钮
     reset_btn = (By.CLASS_NAME, "ant-btn")  # 重置按钮
     year_choice = (By.XPATH,
                    "//div[@class='ant-row']//div[1]//div[1]//div[2]//div[1]//span[1]//div[1]//div[1]//div[1]//div[1]")  # 年度筛选框
     name_select = (By.XPATH,
-                "//input[@placeholder='请输入考核名称']")  # 考核名称筛选框
+                   "//input[@placeholder='请输入考核名称']")  # 考核名称筛选框
     people_choice = (By.XPATH,
                      "//div[@class='ant-tabs-content ant-tabs-content-no-animated ant-tabs-top-content ant-tabs-card-content']//div[3]//div[1]//div[2]//div[1]//span[1]//div[1]//div[1]//div[1]//div[1]")  # 考核人群筛选框
-    del_btns = (By.LINK_TEXT, "删除")  # 删除按钮
+    del_btns = (By.LINK_TEXT, "删除")  # 第一个删除按钮
     publish_btn = (By.XPATH, "//button[@class='ant-btn ant-btn-danger']")  # 发布考核按钮
     year_click = (By.XPATH,
                   "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/form[1]/div[1]/div[2]/div[1]/span[1]/div[1]/div[1]/div[1]/div[1]")  # 考核年度选择
@@ -56,11 +57,16 @@ class LzkhPage(BasePage):  # 定位需要的元素
         time.sleep(1)
         self.click(self.ok_btn)
 
-    def select_by_name(self, name_select): #根据考核名称筛选
+    def select_by_name(self, name_select):  # 根据考核名称筛选
         self.get(self.current_url)
         self.send_keys(self.name_select, name_select)
         time.sleep(2)
         self.click(self.select_btn)
         time.sleep(2)
 
-
+    def del_table(self):
+        self.get(self.current_url)
+        time.sleep(2)
+        self.s_click(self.del_btns, 0) # 获取界面所有删除按钮，定位到第一个
+        time.sleep(1)
+        self.click_keys()

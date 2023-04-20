@@ -24,11 +24,20 @@ class BasePage:
     def locator_element(self, args):  # 定位元素封装将By. name和value看成一个元组
         return self.driver.find_element(*args)
 
+    def locator_elements(self, args,):
+        return self.driver.find_elements(*args)
+
     def send_keys(self, args, value):  # 发送值封装先定位元素
         self.locator_element(args).send_keys(value)
 
+    def s_send_keys(self, args, num, value):  # 发送值封装先定位元素，相同元素存在多个使用此方法
+        self.locator_elements(args)[num].send_keys(value)
+
     def click(self, args):  # 点击事件封装,先定位元素
         self.locator_element(args).click()
+
+    def s_click(self, args, num):  # 发送值封装先定位元素，相同元素存在多个使用此方法
+        self.locator_elements(args)[num].click()
 
     def goin_frame(self, framename):  # 进入框架封装
         self.driver.switch_to.frame(framename)
@@ -52,15 +61,3 @@ class BasePage:
 
     def remove_att(self, args):
         self.driver.execute_script('', args)
-
-    def get_table_content(self, args, args2):
-        arr = []
-        arr1 = []
-        table = self.locator_element(args)
-        table_tr_list = table.find_elements(args2)
-        for tr in table_tr_list:
-            arr1 = tr.text.split(" ")
-            print(arr1)
-            arr.append(arr1)
-        return arr
-
