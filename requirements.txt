@@ -8,3 +8,4 @@ cryptography
 pyOpenSSL
 certifi
 selenium~=4.8.2
+document

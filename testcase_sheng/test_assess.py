@@ -20,9 +20,7 @@ test_select_data = ["测试新增考核"]
 
 
 class TestAssess:
-    lp = LoginPage()  # 要先登录
-    lp.login_sgw("hnssgw", "123456")  # 先登录
-
+    @pytest.mark.usefixtures('set_sheng')
     @allure.story('发布考核--测试用例')
     @pytest.mark.parametrize("kh_name,starttime,endtime,telephone", test_publish_data)  # 将数据传入测试用例
     def test_publish(self, kh_name, starttime, endtime, telephone, log):  # 发布考核

@@ -13,7 +13,7 @@ class LoginPage(BasePage):
     login_sub = (By.XPATH, "//button[@class='ant-btn ant-btn-primary login-btn ant-btn-lg']")  # 登录按钮
 
     # 将页面中会用到的动作统一封装在这里
-    def login_sgw(self, username, password):  # 用户名\密码不写死,在用例层调用
+    def login_platform(self, username, password):  # 用户名\密码不写死,在用例层调用
         self.get(self.current_url)
         self.send_keys(self.username_loc, username)
         self.send_keys(self.password_loc, password)
