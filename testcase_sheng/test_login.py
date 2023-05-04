@@ -21,7 +21,6 @@ class TestLogin:
     @allure.story('登录测试用例')
     @pytest.mark.parametrize("username,password", test_login_data)  # 将数据传入测试用例
     def test_login(self, username, password, log):  # 登录
-
         text = ''
         lp = LoginPage()
         lp.login_platform(username, password)  # 传入参数

@@ -3,6 +3,8 @@
 """
 import os
 import time
+
+from numpy import var
 from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 
@@ -21,7 +23,7 @@ class PageAssess(BasePage):  # 定位需要的元素
     del_btns = (By.LINK_TEXT, "删除")  # 第一个删除按钮
     publish_btn = (By.XPATH, "//button[@class='ant-btn ant-btn-danger']")  # 发布考核按钮
     year_click = (By.XPATH,
-                  "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/form[1]/div[1]/div[2]/div[1]/span[1]/div[1]/div[1]/div[1]/div[1]")  # 考核年度选择
+                  "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/form[1]/div[1]/div[2]/div[1]/span[1]/div[1]/div[1]/div[1]")  # 考核年度选择（发布）
     name_input = (
         By.XPATH,
         "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/form[1]/div[2]/div[2]/div[1]/span[1]/input[1]")  # 考核名称输入框
@@ -32,16 +34,20 @@ class PageAssess(BasePage):  # 定位需要的元素
     tel_input = (By.XPATH, "//input[@placeholder='请输入咨询电话']")  # 咨询电话
     ok_btn = (By.XPATH, "//div[@class='ant-modal-footer']//div//button[@class='ant-btn ant-btn-primary']")
     js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
-    year1 = (By.XPATH, "//li[contains(text(),'2023')]")
 
-    def publish_lzkh(self, kh_name, starttime, endtime, telephone):  # 发布履职考核
+
+
+    def publish_lzkh(self, year_str, kh_name, starttime, endtime, telephone):  # 发布履职考核
 
         self.get(self.current_url)
         time.sleep(1)
         self.click(self.publish_btn)  # 点击发布考核按钮
         time.sleep(2)
         self.click(self.year_click)  # 点击考核年度选择框
-        time.sleep(5)  # 手动选择年度
+        time.sleep(1)  # 手动选择年度
+        self.year_select = (By.XPATH, "//li[contains(text(),'%s')]" % year_str)  # 将年度选择框插入变量，可以自定义选择
+        self.click(self.year_select)
+        time.sleep(1)
         self.send_keys(self.name_input, kh_name)  # 输入考核名称
         self.click(self.time_select)  # 点击时间选择控件
         time.sleep(2)
@@ -64,9 +70,17 @@ class PageAssess(BasePage):  # 定位需要的元素
         self.click(self.select_btn)
         time.sleep(2)
 
-    def del_table(self):
+    def select_by_year(self, year_str):
+        self.get(self.current_url)
+        self.click(self.year_choice)
+        self.year_select = (By.XPATH, "//li[contains(text(),'%s')]" % year_str)  # 将年度选择框插入变量，可以自定义选择
+        self.click(self.year_select)
+        self.click(self.select_btn)
+        time.sleep(2)
+
+    def del_table(self, number):
         self.get(self.current_url)
         time.sleep(2)
-        self.s_click(self.del_btns, 0) # 获取界面所有删除按钮，定位到第一个
+        self.s_click(self.del_btns, number) # 获取界面所有删除按钮，定位到第几个为变量，用例层传参
         time.sleep(1)
         self.click_keys()

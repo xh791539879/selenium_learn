@@ -2,6 +2,8 @@
 登录
 """
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from base.base_page import BasePage
 
 
@@ -15,6 +17,7 @@ class LoginPage(BasePage):
     # 将页面中会用到的动作统一封装在这里
     def login_platform(self, username, password):  # 用户名\密码不写死,在用例层调用
         self.get(self.current_url)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.login_sub))  # 等待元素可点击
         self.send_keys(self.username_loc, username)
         self.send_keys(self.password_loc, password)
         self.click(self.login_sub)
