@@ -12,13 +12,14 @@ from selenium.webdriver.common.by import By
 from base.base_page import driver
 from pageobject.pagesheng.page_assess import PageAssess
 
-test_publish_data = [("2023", "测试新增考核", "2023-04-13", "2023-04-30", "2795123"),
-                     ("2021", "测试新增考核2", "2023-04-13", "2023-04-30", "2795456")]
+test_publish_data = [("2023", "测试新增考核", "2023-05-13", "2023-05-30", "2795123"),
+                     ("2021", "测试新增考核2", "2023-05-13", "2023-05-30", "2795456")]
 
 test_name_select_data = ["测试新增考核"]
 test_year_select_data = ["2023"]
 
 
+@allure.feature('发布履职考核模块')
 class TestAssess:
     @pytest.mark.usefixtures('set_sheng')
     @allure.story('发布考核--测试用例')
@@ -34,9 +35,15 @@ class TestAssess:
             text = driver.find_element(By.XPATH, "//tr[1]//td[3]").text
             assert text == "测试自动输入考核名称"
             log.logger.info(
-                "考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}发布成功".format(year, kh_name, starttime, endtime, telephone))
+                "考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}发布成功".format(year, kh_name, starttime,
+                                                                                             endtime, telephone))
         except Exception as msg:
-            msg = "考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}断言失败，返回text:{0}".format(year, kh_name, starttime, endtime, telephone, text)
+            msg = "考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}断言失败，返回text:{0}".format(year,
+                                                                                                            kh_name,
+                                                                                                            starttime,
+                                                                                                            endtime,
+                                                                                                            telephone,
+                                                                                                            text)
             log.logger.error(msg)
             now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
             print(u"异常原因%s" % msg)  # 打印异常原因
@@ -50,7 +57,9 @@ class TestAssess:
             raise  # 抛出异常,否则用例会被判断为pass
         finally:
             log.logger.info(
-                "测试用例结束，考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}".format(year, kh_name, starttime, endtime, telephone))
+                "测试用例结束，考核年度{0}，考核名称{1}，开始时间{2}，结束时间{3}，咨询电话{4}".format(year, kh_name,
+                                                                                                  starttime, endtime,
+                                                                                                  telephone))
 
     @pytest.mark.usefixtures('set_sheng')
     @allure.story('按名称查询考核--测试用例')

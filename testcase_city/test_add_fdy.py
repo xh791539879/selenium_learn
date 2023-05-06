@@ -1,18 +1,18 @@
-import time
-from time import sleep
 
+import allure
 import pytest
 from pageobject.pagecity.page_add_fdy import PageAddFdy
 
 test_add_fdy_data = [2]
 
 
+@allure.feature('æ–°å¢è¾…å¯¼å‘˜æ¨¡å—')
 class TestAddFdy:
+    @allure.story('æ–°å¢è¾…å¯¼å‘˜æµ‹è¯•ç”¨ä¾‹')
     @pytest.mark.usefixtures('set_city')
     @pytest.mark.parametrize("num", test_add_fdy_data)
     def test_add_fdy(self, num, log):
-        log.logger.info("²âÊÔÓÃÀı£ºĞÂÔö¸¨µ¼Ô±£¬¿ªÊ¼")
-        sleep(2)
+        log.logger.info("æµ‹è¯•ç”¨ä¾‹ï¼šæ–°å¢è¾…å¯¼å‘˜ï¼Œå¼€å§‹")
         af = PageAddFdy()
         af.add_fdy(num)
         print(num)

@@ -5,6 +5,7 @@ import pytest
 import selenium.webdriver.support.ui as ui
 import selenium.webdriver.support.expected_conditions as EC
 
+import base.base_page
 from base.base_page import driver
 from common.log import Logger
 
@@ -14,6 +15,16 @@ def log():  # 生成日志
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     log = Logger('D:\\HNSGW\\log\\' + now + 'run.log', level='info')
     return log
+
+
+@pytest.fixture(scope="session")
+def browser():
+    global driver
+    if driver is None:
+        driver = base.base_page.driver  # 这里可以换成其他浏览器的驱动
+    yield driver
+    driver.quit()
+    driver = None
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -37,7 +48,6 @@ def is_visible(args, timeout=10):
         return True
     except TimeoutError:
         return False
-
 
 # def pytest_collection_modifyitems(items):
 #     """

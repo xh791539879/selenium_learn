@@ -3,15 +3,13 @@
 #基础层
 """
 from time import sleep
-
-import selenium
-from selenium.common import exceptions
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
-from webdriver_helper import *
 from selenium.webdriver import ActionChains
 
-driver = get_webdriver()
+from config.config import get_driver
+
+driver = get_driver()
 
 
 class BasePage:

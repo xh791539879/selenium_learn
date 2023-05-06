@@ -1,6 +1,8 @@
 """
 登录
 """
+from time import sleep
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -21,4 +23,5 @@ class LoginPage(BasePage):
         self.send_keys(self.username_loc, username)
         self.send_keys(self.password_loc, password)
         self.click(self.login_sub)
+        sleep(5)  # 等待5s，手动验证滑块
 
