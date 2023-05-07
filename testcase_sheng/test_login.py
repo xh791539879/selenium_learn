@@ -50,9 +50,9 @@ class TestLogin:
                 driver.save_screenshot(file_path)
                 # 将截图展示在allure测试报告上
                 with open(file_path, mode="rb") as f:
-                    allure.attach(f.read(), imgname, allure.attachment_type.PNG)
+                    allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 将失败截图打印到allure报告，只有失败会有这份截图
                 raise e  # 抛出异常,否则用例会被判断为pass
-        except exceptions.NoSuchElementException as e:
+        except exceptions.NoSuchElementException as e:  # 如果是没找到元素
             now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
             print(u"异常原因%s" % e)  # 打印异常原因
             imgname = now + "异常截图.png"
@@ -61,14 +61,14 @@ class TestLogin:
             driver.save_screenshot(file_path)
             # 将截图展示在allure测试报告上
             with open(file_path, mode="rb") as f:
-                allure.attach(f.read(), imgname, allure.attachment_type.PNG)
+                allure.attach(f.read(), imgname, allure.attachment_type.PNG)  #打印失败截图
             pytest.fail(msg="元素定位失败")
         finally:
             log.logger.info("用户名:{0}，密码:{1},登录验证完成".format(username, password))
             # 添加用例执行结果的附加信息到allure测试报告中
             allure.attach(driver.get_screenshot_as_png(), "用例执行结果截图",
-                          attachment_type=allure.attachment_type.PNG)
-            allure.attach("用户名：{0}，密码：{1}，实际登录角色为:{2}".format(username, password, text), "用例执行结果描述")
+                          attachment_type=allure.attachment_type.PNG)  # 将用例最终截图打印到allure报告，无论失败与否都打印
+            allure.attach("用户名：{0}，密码：{1}，实际登录角色为:{2}".format(username, password, text), "用例执行结果描述")  # 将实际结果打印到allure报告
 
 
 
