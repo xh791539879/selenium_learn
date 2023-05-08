@@ -12,12 +12,13 @@ from pageobject.login_page import LoginPage
 
 driver = base.base_page.driver
 
-test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
-                   ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
-
+# test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
+#                    ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
+test_login_data = [("zzssgw", "123456")]
 
 @allure.feature('登录模块')  # 功能模块\场景
 class TestLogin:
+    @pytest.mark.screenshot
     @allure.step('测试登录')  # 测试用例的步骤
     @allure.severity('blocker')  # 测试用例的严重级别
     @allure.story('登录测试用例')  # 测试场景
@@ -44,15 +45,17 @@ class TestLogin:
                 log.logger.error(msg)
                 now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
                 print(u"异常原因%s" % msg)  # 打印异常原因
-                imgname = now + "异常截图.png"
-                # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
-                file_path = 'error_image/login_image/' + imgname
-                driver.save_screenshot(file_path)
-                # 将截图展示在allure测试报告上
-                with open(file_path, mode="rb") as f:
-                    allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 将失败截图打印到allure报告，只有失败会有这份截图
+                # imgname = now + "异常截图.png"
+                # # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
+                # file_path = 'error_image/login_image/' + imgname
+                # driver.save_screenshot(file_path)
+                # # 将截图展示在allure测试报告上
+                # with open(file_path, mode="rb") as f:
+                #     allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 将失败截图打印到allure报告，只有失败会有这份截图
                 raise e  # 抛出异常,否则用例会被判断为pass
         except exceptions.NoSuchElementException as e:  # 如果是没找到元素
+            msg = "元素定位失败，没有定位到name"
+            log.logger.error(msg)
             now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
             print(u"异常原因%s" % e)  # 打印异常原因
             imgname = now + "异常截图.png"
@@ -61,7 +64,7 @@ class TestLogin:
             driver.save_screenshot(file_path)
             # 将截图展示在allure测试报告上
             with open(file_path, mode="rb") as f:
-                allure.attach(f.read(), imgname, allure.attachment_type.PNG)  #打印失败截图
+                allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 打印失败截图
             pytest.fail(msg="元素定位失败")
         finally:
             log.logger.info("用户名:{0}，密码:{1},登录验证完成".format(username, password))

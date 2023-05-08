@@ -3,59 +3,84 @@
 #基础层
 """
 from time import sleep
+
+from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_helper import *
 
-from config.config import get_driver
-
-driver = get_driver()
+driver = get_webdriver()
 
 
 class BasePage:
-    def __init__(self):  #
+    def __init__(self):  # 实例化时获取浏览器驱动
+        """
+        初始化浏览器
+        :param driver:
+        """
         self.driver = driver
 
-    def get(self, url):  # 跳转地址封装
+    # 跳转页面方法封装
+    def get(self, url):
         self.driver.get(url)
 
-    def locator_element(self, args):  # 定位元素封装将By. name和value看成一个元组
-        return self.driver.find_element(*args)
+    # 定位单个元素方法封装，用EC来等待元素加载
+    def find_element(self, args):
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(args))
 
-    def locator_elements(self, args,):
-        return self.driver.find_elements(*args)
+    # 定位多个元素方法封装，用EC来等待元素加载
+    def find_elements(self, args):
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(args))
 
-    def send_keys(self, args, value):  # 发送值封装先定位元素
-        self.locator_element(args).send_keys(value)
+    # 对输入框进行输入值操作封装
+    def send_keys(self, args, value):
+        element = self.find_element(args)  # 先定位元素
+        element.clear()  # 清空输入框中的内容
+        element.send_keys(value)  # 发送输入值
 
-    def s_send_keys(self, args, num, value):  # 发送值封装先定位元素，相同元素存在多个使用此方法
-        self.locator_elements(args)[num].send_keys(value)
+    # 对元素进行点击操作封装
+    def click(self, args):
+        element = self.find_element(args)  # 先定位元素
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(args))  # 等待元素可点击
+        element.click()  # 对元素进行点击操作
 
-    def click(self, args):  # 点击事件封装,先定位元素
-        self.locator_element(args).click()
-
-    def s_click(self, args, num):  # 发送值封装先定位元素，相同元素存在多个使用此方法
-        self.locator_elements(args)[num].click()
-
-    def goin_frame(self, framename):  # 进入框架封装
+    # 进入框架操作封装
+    def in_frame(self, framename):
         self.driver.switch_to.frame(framename)
 
-    def out_frame(self):  # 跳出框架封装
+    # 跳出框架操作封装
+    def out_frame(self):
         self.driver.switch_to.default_content()
 
-    def choice_select(self, args, value):  # 标准的select标签下拉框封装
-        sel = Select(self.locator_element(args))
-        sel.select_by_value(str(value))
+    # 对下拉选择框进行数据选择封装
+    def choice_select(self, args, value):
+        sel = Select(self.find_element(args))  # 先定位元素
+        sel.select_by_value(str(value))  # 根据传入的值选择下拉框中对应的选项
 
-    def remove_readonly(self, args):
-        a = self.locator_element(args)
-        self.driver.execute_script('arguments[0].removeAttribute(\"readonly\")', a)
+    # 移除元素的某个属性
+    def remove_attribute(self, xpath, attribute):
+        element = self.find_element(xpath)  # 先定位元素
+        self.driver.execute_script(f"arguments[0].{attribute}=''", element)  # 通过JavaScript执行移除属性操作
 
+    # 对元素进行键盘点击操作
     def click_keys(self):
-        action_chains = ActionChains(self.driver)
+        action_chains = ActionChains(self.driver)  # 实例化ActionChains对象
+        # 按下并释放Enter键，制造“点击”效果
         action_chains.key_up(Keys.ENTER).perform()
         sleep(1)
         action_chains.key_down(Keys.ENTER).perform()
 
+    # 移除元素的属性值
     def remove_att(self, args):
         self.driver.execute_script('', args)
+
+    # 等待单个元素出现
+    def wait_for_element_present(self, xpath):
+        self.find_element(xpath)
+
+    # 等待多个元素出现
+    def wait_for_elements_present(self, xpath):
+        self.find_elements(xpath)

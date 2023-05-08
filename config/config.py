@@ -1,15 +1,19 @@
 from selenium import webdriver
-import threading
-
-driver = None
-lock = threading.Lock()
 
 
-def get_driver():
-    global driver
-    if driver is None:
-        lock.acquire()
-        if driver is None:
-            driver = webdriver.Chrome()
-        lock.release()
-    return driver
+class ChromeDriver:
+    def __init__(self, headless=False):
+        """
+        初始化谷歌浏览器驱动
+        :param headless: 是否开启无界面模式，默认为 False
+        """
+        options = webdriver.ChromeOptions()
+        if headless:
+            options.add_argument('headless')
+        self.driver = webdriver.Chrome(options=options)
+
+    def teardown(self):
+        """
+        关闭浏览器并退出驱动程序
+        """
+        self.driver.quit()
