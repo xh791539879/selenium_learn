@@ -4,21 +4,20 @@
 import time
 import allure
 import pytest
-from selenium.common import exceptions
+from selenium.common import exceptions, NoSuchElementException
 from selenium.webdriver.common.by import By
 import base.base_page
+from Util.base_util import BaseUtil
+from Util.error_screenshot_util import save_error_screenshot
 from pageobject.login_page import LoginPage
 
 
-driver = base.base_page.driver
+test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
+                   ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
 
-# test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
-#                    ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
-test_login_data = [("zzssgw", "123456")]
 
 @allure.feature('登录模块')  # 功能模块\场景
-class TestLogin:
-    @pytest.mark.screenshot
+class TestLogin(BaseUtil):
     @allure.step('测试登录')  # 测试用例的步骤
     @allure.severity('blocker')  # 测试用例的严重级别
     @allure.story('登录测试用例')  # 测试场景
@@ -31,48 +30,33 @@ class TestLogin:
         :param password: 密码
         :param log: 日志对象
         """
-        text = ''
-        lp = LoginPage()
-        lp.login_platform(username, password)  # 传入参数
+        role = ''
         try:
-            target = driver.find_element(By.CLASS_NAME, "name")
-            try:
-                text = target.text
-                assert text == "河南省少工委"
-                log.logger.info("用户名：{0}，密码：{1}，登录成功".format(username, password))
-            except AssertionError as e:
-                msg = "用户名：{0}，密码：{1}断言失败，实际登录角色为:{2}".format(username, password, text)
-                log.logger.error(msg)
-                now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
-                print(u"异常原因%s" % msg)  # 打印异常原因
-                # imgname = now + "异常截图.png"
-                # # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
-                # file_path = 'error_image/login_image/' + imgname
-                # driver.save_screenshot(file_path)
-                # # 将截图展示在allure测试报告上
-                # with open(file_path, mode="rb") as f:
-                #     allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 将失败截图打印到allure报告，只有失败会有这份截图
-                raise e  # 抛出异常,否则用例会被判断为pass
-        except exceptions.NoSuchElementException as e:  # 如果是没找到元素
-            msg = "元素定位失败，没有定位到name"
+            lp = LoginPage(self.driver)
+            role = lp.login_platform(username, password)  # 传入参数
+            assert role == "河南省少工委"
+            log.logger.info(f"用户名：{username}，密码：{password}，登录成功，角色为:{role}")
+        except AssertionError as e:
+            msg = f"登录角色错误：用户名：{username}，密码：{password}，实际登录角色为:{role}"
             log.logger.error(msg)
-            now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
-            print(u"异常原因%s" % e)  # 打印异常原因
-            imgname = now + "异常截图.png"
-            # 如果操作步骤过程中有异常，那么用例失败，在这里完成截图操作
-            file_path = 'error_image/login_image/' + imgname
-            driver.save_screenshot(file_path)
-            # 将截图展示在allure测试报告上
-            with open(file_path, mode="rb") as f:
-                allure.attach(f.read(), imgname, allure.attachment_type.PNG)  # 打印失败截图
-            pytest.fail(msg="元素定位失败")
+            print(f"异常原因：{msg}")  # 打印异常原因
+            save_error_screenshot("登录断言失败截图", self.driver, 'login_error')
+            raise e  # 抛出异常,否则用例会被判断为pass
+        except (NoSuchElementException, exceptions.TimeoutException) as e:  # 如果是没找到元素
+            msg = f"元素定位失败，具体错误信息{e}"
+            log.logger.error(msg)
+            print(f"异常原因：{msg}")  # 打印异常原因
+            save_error_screenshot("登录元素定位失败截图", self.driver, 'login_error')
+            pytest.fail(reason="元素定位失败")
+        except Exception as e:
+            msg = f"其他错误，具体错误信息{e}"
+            log.logger.error(msg)
+            print(f"异常原因：{msg}")
+            save_error_screenshot("登录其他错误截图", self.driver, 'login_error')
+            raise e
         finally:
-            log.logger.info("用户名:{0}，密码:{1},登录验证完成".format(username, password))
+            log.logger.info(f"用户名:{username}，密码:{password},登录验证完成")
             # 添加用例执行结果的附加信息到allure测试报告中
-            allure.attach(driver.get_screenshot_as_png(), "用例执行结果截图",
+            allure.attach(self.driver.get_screenshot_as_png(), "用例执行结果截图",
                           attachment_type=allure.attachment_type.PNG)  # 将用例最终截图打印到allure报告，无论失败与否都打印
-            allure.attach("用户名：{0}，密码：{1}，实际登录角色为:{2}".format(username, password, text), "用例执行结果描述")  # 将实际结果打印到allure报告
-
-
-
-
+            allure.attach(f"用户名：{username}，密码：{password}，实际登录角色为:{role}", "用例执行结果描述")  # 将实际结果打印到allure报告

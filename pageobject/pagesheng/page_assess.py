@@ -3,8 +3,6 @@
 """
 import os
 import time
-
-from numpy import var
 from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 
@@ -34,8 +32,6 @@ class PageAssess(BasePage):  # 定位需要的元素
     tel_input = (By.XPATH, "//input[@placeholder='请输入咨询电话']")  # 咨询电话
     ok_btn = (By.XPATH, "//div[@class='ant-modal-footer']//div//button[@class='ant-btn ant-btn-primary']")
     js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
-
-
 
     def publish_lzkh(self, year_str, kh_name, starttime, endtime, telephone):  # 发布履职考核
 
@@ -81,6 +77,6 @@ class PageAssess(BasePage):  # 定位需要的元素
     def del_table(self, number):
         self.get(self.current_url)
         time.sleep(2)
-        self.s_click(self.del_btns, number) # 获取界面所有删除按钮，定位到第几个为变量，用例层传参
+        self.s_click(self.del_btns, number)  # 获取界面所有删除按钮，定位到第几个为变量，用例层传参
         time.sleep(1)
         self.click_keys()
