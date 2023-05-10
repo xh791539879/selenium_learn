@@ -4,7 +4,6 @@
 """
 from time import sleep
 from selenium.webdriver import Keys
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,11 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
-    def __init__(self, driver):  # 实例化时获取浏览器驱动
-        """
-        初始化浏览器
-        :param driver:
-        """
+    def __init__(self):  #
         self.driver = driver
 
     # 跳转页面方法封装
