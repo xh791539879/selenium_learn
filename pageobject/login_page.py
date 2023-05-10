@@ -7,6 +7,9 @@ from base.base_page import BasePage
 
 
 class LoginPage(BasePage):
+    def __init__(self, driver):
+        super().__init__(driver)
+
     """
     页面类：登录页面
 

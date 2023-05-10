@@ -10,7 +10,6 @@ import base.base_page
 from Util.error_screenshot_util import save_error_screenshot
 from pageobject.login_page import LoginPage
 
-
 test_login_data = [("hnssgw", "123456"), ("", "123456"), ("hnssgw", ""), ("zzssgw", "123456"),
                    ("123456", "123456")]  # 数据驱动，一组数据即为一条用例
 
@@ -29,10 +28,9 @@ class TestLogin:
         :param password: 密码
         :param log: 日志对象
         """
-        # self.driver = base.base_page.driver
         role = ''
         try:
-            lp = LoginPage()
+            lp = LoginPage(driver)
             role = lp.login_platform(username, password)  # 传入参数
             assert role == "河南省少工委"
             log.logger.info(f"用户名：{username}，密码：{password}，登录成功，角色为:{role}")
@@ -59,4 +57,5 @@ class TestLogin:
             # 添加用例执行结果的附加信息到allure测试报告中
             allure.attach(driver.get_screenshot_as_png(), "用例执行结果截图",
                           attachment_type=allure.attachment_type.PNG)  # 将用例最终截图打印到allure报告，无论失败与否都打印
-            allure.attach(f"用户名：{username}，密码：{password}，实际登录角色为:{role}", "用例执行结果描述")  # 将实际结果打印到allure报告
+            allure.attach(f"用户名：{username}，密码：{password}，实际登录角色为:{role}",
+                          "用例执行结果描述")  # 将实际结果打印到allure报告

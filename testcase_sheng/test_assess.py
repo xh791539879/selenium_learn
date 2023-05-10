@@ -10,8 +10,6 @@ import allure
 import pytest
 from selenium.common import NoSuchElementException, exceptions
 from selenium.webdriver.common.by import By
-
-import base.base_page
 from Util.error_screenshot_util import save_error_screenshot
 from common.common import TableDataExtractor
 from pageobject.pagesheng.page_assess import PageAssess
@@ -29,6 +27,7 @@ test_year_select_data = ["2023"]
 @allure.feature('发布履职考核模块')
 class TestAssess:
     """发布考核测试用例"""
+
     @pytest.mark.usefixtures('set_sheng')
     @allure.story('发布考核--测试用例')
     @pytest.mark.parametrize("year,kh_name,starttime,endtime,telephone", test_publish_data)  # 将数据传入测试用例
@@ -44,7 +43,7 @@ class TestAssess:
         """
         log.logger.info("测试用例：发布考核，开始")
         sleep(5)
-        et = PageAssess()  # 进行考核发布的操作
+        et = PageAssess(driver)  # 进行考核发布的操作
         et.publish_lzkh(year, kh_name, starttime, endtime, telephone)
         time.sleep(3)  # 等待3s，避免加载慢
         text = ""
@@ -76,7 +75,6 @@ class TestAssess:
     def test_name_select_assess(self, name_select, log, driver):
         # 获取driver对象，执行测试用例之前必须初始化driver
 
-
         # 记录日志
         log.logger.info("测试用例：按名称查询考核，开始")
 
@@ -84,7 +82,7 @@ class TestAssess:
         sleep(5)
 
         # 创建PageAssess对象，调用相应的方法进行测试操作
-        select = PageAssess()
+        select = PageAssess(driver)
         select.select_by_name(name_select)
         sleep(3)
 
@@ -118,7 +116,7 @@ class TestAssess:
     def test_year_select_assess(self, year_select, log, driver):
         log.logger.info("测试用例：按年度查询考核，开始")
         sleep(5)
-        select = PageAssess()
+        select = PageAssess(driver)
         select.select_by_year(year_select)
         sleep(3)
 
@@ -159,7 +157,7 @@ class TestAssess:
     def test_del_assess(self, name_select, log, driver):
         log.logger.info("测试用例：删除考核，开始")
         sleep(5)
-        del_assess = PageAssess()
+        del_assess = PageAssess(driver)
         del_assess.del_table(0)  # 定位到第1个删除按钮
         time.sleep(2)
         title_name = driver.find_element(By.XPATH, "//tr[1]//td[3]")

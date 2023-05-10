@@ -11,7 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
-    def __init__(self):  #
+
+    def __init__(self, driver):  # 传递driver作为占位符,执行时访问conftest.py中的driver对其实例化
         self.driver = driver
 
     # 跳转页面方法封装

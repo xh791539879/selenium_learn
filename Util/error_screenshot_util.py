@@ -4,7 +4,7 @@ import allure  # 导入 allure 库，用于生成测试报告
 import time  # 导入 time 库，用于获取当前时间戳
 
 
-def save_error_screenshot(file_name, driver, sub_folder=""):
+def save_error_screenshot(file_name, driver, sub_folder=""):  # 传递driver作为占位符,执行时访问conftest.py中的driver对其实例化
     """
     针对自动化测试中的异常情况，将当前浏览器页面截图保存，并添加到 allure 报告中。
     :param file_name: 文件名，描述截图内容
