@@ -52,6 +52,12 @@ class BasePage:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(args))  # 等待元素可点击
         element.click()  # 对元素进行点击操作
 
+    def s_click(self, args, num):  # 点击封装先定位元素，相同元素存在多个使用此方法
+        self.find_elements(args)[num].click()
+
+    def s_send_keys(self, args, num, value):  # 发送值封装先定位元素，相同元素存在多个使用此方法
+        self.find_elements(args)[num].send_keys(value)
+
     # 进入框架操作封装
     def in_frame(self, framename):
         self.driver.switch_to.frame(framename)

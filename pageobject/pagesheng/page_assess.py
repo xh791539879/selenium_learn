@@ -32,8 +32,21 @@ class PageAssess(BasePage):  # 定位需要的元素
     tel_input = (By.XPATH, "//input[@placeholder='请输入咨询电话']")  # 咨询电话
     ok_btn = (By.XPATH, "//div[@class='ant-modal-footer']//div//button[@class='ant-btn ant-btn-primary']")
     js = (By.XPATH, "//body/div[@id='popContainer']/div[1]/div[1]/div[1]")
+    title = (By.XPATH, "//tr[1]//td[3]")
+
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.year_select = None  # 将 year_select 定义为 None，以便在 select_by_year 方法中进行初始化
 
     def publish_lzkh(self, year_str, kh_name, starttime, endtime, telephone):  # 发布履职考核
+        """发布考核
+        :param year_str:年度
+        :param kh_name:考核名称
+        :param starttime:开始时间
+        :param endtime:结束时间
+        :param telephone:联系方式
+        :return:无
+        """
 
         self.get(self.current_url)
         time.sleep(1)
@@ -41,7 +54,7 @@ class PageAssess(BasePage):  # 定位需要的元素
         time.sleep(2)
         self.click(self.year_click)  # 点击考核年度选择框
         time.sleep(1)  # 手动选择年度
-        self.year_select = (By.XPATH, "//li[contains(text(),'%s')]" % year_str)  # 将年度选择框插入变量，可以自定义选择
+        self.year_select = (By.XPATH, f"//li[contains(text(),'{year_str}')]")  # 将年度选择框插入变量，可以自定义选择
         self.click(self.year_select)
         time.sleep(1)
         self.send_keys(self.name_input, kh_name)  # 输入考核名称
@@ -60,6 +73,10 @@ class PageAssess(BasePage):  # 定位需要的元素
         self.click(self.ok_btn)
 
     def select_by_name(self, name_select):  # 根据考核名称筛选
+        """
+        :param name_select:需要筛选的名称
+        :return:
+        """
         self.get(self.current_url)
         self.send_keys(self.name_select, name_select)
         time.sleep(2)
@@ -69,14 +86,17 @@ class PageAssess(BasePage):  # 定位需要的元素
     def select_by_year(self, year_str):
         self.get(self.current_url)
         self.click(self.year_choice)
-        self.year_select = (By.XPATH, "//li[contains(text(),'%s')]" % year_str)  # 将年度选择框插入变量，可以自定义选择
+        self.year_select = (By.XPATH, f"//li[contains(text(),'{year_str}')]")  # 将年度选择框插入变量，可以自定义选择
         self.click(self.year_select)
         self.click(self.select_btn)
         time.sleep(2)
 
-    def del_table(self, number):
-        self.get(self.current_url)
-        time.sleep(2)
-        self.s_click(self.del_btns, number)  # 获取界面所有删除按钮，定位到第几个为变量，用例层传参
-        time.sleep(1)
-        self.click_keys()
+    def del_table(self, number):  # 定义 del_table 方法，其中 number 为删除按钮的编号
+        self.get(self.current_url)  # 打开当前页面的 URL
+        time.sleep(0.5)  # 等待0.5秒，等待页面元素加载完成
+        delete_before = self.get_text(self.title)  # 获取删除前的标题文本
+        self.s_click(self.del_btns, number)  # 点击指定编号的删除按钮
+        time.sleep(0.5)  # 等待0.5秒，等待页面元素加载完成
+        self.click_keys()  # 点击键盘的回车键或者删除键，确认删除
+        del_after = self.get_text(self.title)  # 获取删除后的标题文本
+        return delete_before, del_after  # 返回删除前和删除后的标题文本（两个值）
