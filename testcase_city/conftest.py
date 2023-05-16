@@ -1,10 +1,11 @@
 import pytest
+
 from pageobject.login_page import LoginPage
 
 
 @pytest.fixture(scope="session", autouse=False)
-def set_city():
-    lp = LoginPage()  # 要先登录
+def set_city(driver):
+    lp = LoginPage(driver)  # 要先登录
     lp.login_platform("zzssgw", "123456")  # 先登录
     yield
     pass

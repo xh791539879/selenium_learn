@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import random
+
 from info_common.name import *
-from info_common.province import province_id
 from info_common.phone import phone_number
+from info_common.province import province_id
 
 
 # 随机生成姓名
@@ -119,10 +120,10 @@ def get_email():
 
 # if __name__ == '__main__':
 #     x = get_name()
-#     print("姓名:",x)
+#     print("姓名:", x)
 #     y = get_idnum()
-#     print("身份证号:",y)
+#     print("身份证号:", y)
 #     z = get_email()
-#     print("邮箱:",z)
+#     print("邮箱:", z)
 #     w = get_card_id()
-#     print("银行卡号:",w)
+#     print("银行卡号:", w)
