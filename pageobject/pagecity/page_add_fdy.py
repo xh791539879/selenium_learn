@@ -46,6 +46,7 @@ class PageFdy(BasePage):
 
     def search_by_name(self, name):
         self.get(self.current_url)
+        sleep(1)
         self.send_keys(self.name_input, name)
         self.click(self.search_btn)
 

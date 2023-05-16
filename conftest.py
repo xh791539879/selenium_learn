@@ -20,9 +20,8 @@ def driver():
 @pytest.fixture(scope="session")
 def log():  # 生成日志
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
-    log = Logger('D:\\HNSGW\\log\\' + now + 'run.log', level='info')
+    log = Logger('D:\\workspace-python\\HNSGW\\log\\' + now + 'run.log', level='info')
     return log
-
 
 @pytest.fixture(scope="function", autouse=True)
 def set_function():

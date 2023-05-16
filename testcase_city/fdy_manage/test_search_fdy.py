@@ -1,3 +1,5 @@
+from time import sleep
+
 import allure
 import pytest
 from selenium.common import exceptions, NoSuchElementException
@@ -6,41 +8,46 @@ from selenium.webdriver.common.by import By
 from Util.error_screenshot_util import save_error_screenshot
 from pageobject.pagecity.page_add_fdy import PageFdy
 
-test_name_data = ['Ö£Öİ¶şÖĞ¶Ó']
+test_name_data = ['éƒ‘å·äºŒä¸­é˜Ÿ']
 
 
-@allure.feature('²éÑ¯¸¨µ¼Ô±Ä£¿é')
+@allure.feature('æŸ¥è¯¢è¾…å¯¼å‘˜æ¨¡å—')
 class TestSearchFdy:
-    @allure.story('°´ĞÕÃû²éÑ¯¸¨µ¼Ô±--²âÊÔÓÃÀı')
+    @allure.story('æŒ‰å§“åæŸ¥è¯¢è¾…å¯¼å‘˜--æµ‹è¯•ç”¨ä¾‹')
     @pytest.mark.usefixtures('set_city')
     @pytest.mark.parametrize('name', test_name_data)
     def test_search_by_name(self, log, driver, name):
-        log.logger.info("²âÊÔÓÃÀı£º°´ĞÕÃû²éÑ¯¸¨µ¼Ô±£¬¿ªÊ¼")
+        log.logger.info("æµ‹è¯•ç”¨ä¾‹ï¼šæŒ‰å§“åæŸ¥è¯¢è¾…å¯¼å‘˜ï¼Œå¼€å§‹")
         pf = PageFdy(driver)
         pf.search_by_name(name)
+        sleep(1)
         try:
             fdy_name = driver.find_element(By.XPATH, "//tr[1]//td[2]").text
             assert fdy_name == name
-            log.logger.info(f"Í¨¹ıĞÕÃû²éÑ¯¸¨µ¼Ô±£º{name}£º²éÑ¯³É¹¦£¬ÓÃÀıÍ¨¹ı")
+            log.logger.info(f"é€šè¿‡å§“åæŸ¥è¯¢è¾…å¯¼å‘˜ï¼š{name}ï¼šæŸ¥è¯¢æˆåŠŸï¼Œç”¨ä¾‹é€šè¿‡")
         except AssertionError as e:
-            msg = f"Í¨¹ıĞÕÃû²éÑ¯¸¨µ¼Ô±£º{name}£º²éÑ¯Ê§°Ü£¬¶ÏÑÔÊ§°Ü"
+            msg = f"é€šè¿‡å§“åæŸ¥è¯¢è¾…å¯¼å‘˜ï¼š{name}ï¼šæŸ¥è¯¢å¤±è´¥ï¼Œæ–­è¨€å¤±è´¥"
             log.logger.error(msg)
-            save_error_screenshot("²éÑ¯¸¨µ¼Ô±¶ÏÑÔÊ§°Ü½ØÍ¼", driver, 'search_fdy_images')
+            save_error_screenshot("æŸ¥è¯¢è¾…å¯¼å‘˜æ–­è¨€å¤±è´¥æˆªå›¾", driver, 'search_fdy_images')
             raise e
-        except (NoSuchElementException, exceptions.TimeoutException) as e:  # Èç¹ûÊÇÃ»ÕÒµ½ÔªËØ
-            msg = f"ÔªËØ¶¨Î»Ê§°Ü£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+        except (NoSuchElementException, exceptions.TimeoutException) as e:  # å¦‚æœæ˜¯æ²¡æ‰¾åˆ°å…ƒç´ 
+            msg = f"å…ƒç´ å®šä½å¤±è´¥ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")  # ´òÓ¡Òì³£Ô­Òò
-            save_error_screenshot("µÇÂ¼ÔªËØ¶¨Î»Ê§°Ü½ØÍ¼", driver, 'search_fdy_images')
-            pytest.fail(reason="ÔªËØ¶¨Î»Ê§°Ü")
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")  # æ‰“å°å¼‚å¸¸åŸå› 
+            save_error_screenshot("ç™»å½•å…ƒç´ å®šä½å¤±è´¥æˆªå›¾", driver, 'search_fdy_images')
+            pytest.fail(reason="å…ƒç´ å®šä½å¤±è´¥")
         except Exception as e:
-            msg = f"ÆäËû´íÎó£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+            msg = f"å…¶ä»–é”™è¯¯ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")
-            save_error_screenshot("²éÑ¯¸¨µ¼Ô±ÆäËû´íÎó½ØÍ¼", driver, 'search_fdy_images')
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")
+            save_error_screenshot("æŸ¥è¯¢è¾…å¯¼å‘˜å…¶ä»–é”™è¯¯æˆªå›¾", driver, 'search_fdy_images')
             raise e
         finally:
-            log.logger.info(f"²âÊÔÓÃÀıÖ´ĞĞ½áÊø£»°´ĞÕÃû²éÑ¯¸¨µ¼Ô±£º{name}£º²éÑ¯Íê³É")
-            allure.attach(driver.get_screenshot_as_png(), "ÓÃÀıÖ´ĞĞ½á¹û½ØÍ¼",
+            log.logger.info(f"æµ‹è¯•ç”¨ä¾‹æ‰§è¡Œç»“æŸï¼›æŒ‰å§“åæŸ¥è¯¢è¾…å¯¼å‘˜ï¼š{name}ï¼šæŸ¥è¯¢å®Œæˆ")
+            allure.attach(driver.get_screenshot_as_png(), "ç”¨ä¾‹æ‰§è¡Œç»“æœæˆªå›¾",
                           attachment_type=allure.attachment_type.PNG)
-            allure.attach(f"²âÊÔÓÃÀıÖ´ĞĞ½áÊø£»°´ĞÕÃû²éÑ¯¸¨µ¼Ô±£º{name}£º²éÑ¯Íê³É")
+            allure.attach(f"æµ‹è¯•ç”¨ä¾‹æ‰§è¡Œç»“æŸï¼›æŒ‰å§“åæŸ¥è¯¢è¾…å¯¼å‘˜ï¼š{name}ï¼šæŸ¥è¯¢å®Œæˆ")
+
+
+# if __name__ == '__main__':
+#     pytest.main()
