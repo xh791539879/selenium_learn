@@ -1,5 +1,7 @@
 import pytest
+
 from pageobject.login_page import LoginPage
+
 
 @pytest.fixture(scope="session", autouse=False)
 def set_sheng(driver):

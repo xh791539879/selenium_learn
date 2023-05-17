@@ -7,9 +7,9 @@ from selenium.common import exceptions, NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from Util.error_screenshot_util import save_error_screenshot
-from pageobject.pagecity.page_add_fdy import PageFdy
+from pageobject.pagecity.page_fdy_manage import PageFdy
 
-sys.path.append('D:\workspace-python\HNSGW\common')
+sys.path.append('D:/workspace-python/HNSGW/common')
 from common.makeinfo import get_name, get_idnum
 
 x = get_name()  # 调用common公共方法生成随机姓名
@@ -72,7 +72,6 @@ class TestAddFdy:
             allure.attach(driver.get_screenshot_as_png(), "用例执行结果截图",
                           attachment_type=allure.attachment_type.PNG)
             allure.attach(f"辅导员类型：地市总辅导员,辅导员名称{name}，辅导员身份证{number}")
-
 
 # if __name__ == '__main__':
 #     pytest.main()

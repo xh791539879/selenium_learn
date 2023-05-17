@@ -6,9 +6,10 @@ from selenium.common import exceptions, NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from Util.error_screenshot_util import save_error_screenshot
-from pageobject.pagecity.page_add_fdy import PageFdy
+from pageobject.pagecity.page_fdy_manage import PageFdy
 
 test_name_data = ['郑州二中队']
+test_idcard_data = ['郑州二中队']
 
 
 @allure.feature('查询辅导员模块')
@@ -17,7 +18,7 @@ class TestSearchFdy:
     @pytest.mark.usefixtures('set_city')
     @pytest.mark.parametrize('name', test_name_data)
     def test_search_by_name(self, log, driver, name):
-        log.logger.info("测试用例：按姓名查询辅导员，开始")
+        log.logger.info("测试用例：按姓名查询辅导员，开始执行-----------------")
         pf = PageFdy(driver)
         pf.search_by_name(name)
         sleep(1)
@@ -48,6 +49,14 @@ class TestSearchFdy:
                           attachment_type=allure.attachment_type.PNG)
             allure.attach(f"测试用例执行结束；按姓名查询辅导员：{name}：查询完成")
 
-
+    @allure.story('按身份证号查询辅导员--测试用例')
+    @pytest.mark.usefixtures('set_city')
+    @pytest.mark.parametrize('number', test_idcard_data)
+    def search_by_idcard(self, driver, log, number):
+        log.logger.info('测试用例：按身份证号查询辅导员开始执行---------------')
+        pf = PageFdy(driver)
+        pf.search_by_idcard(number)
+        sleep(1)
+        
 # if __name__ == '__main__':
 #     pytest.main()
