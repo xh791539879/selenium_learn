@@ -9,7 +9,7 @@ from Util.error_screenshot_util import save_error_screenshot
 from pageobject.pagecity.page_fdy_manage import PageFdy
 
 test_name_data = ['郑州二中队']
-test_idcard_data = ['郑州二中队']
+test_idcard_data = ['817296199411166258']
 
 
 @allure.feature('查询辅导员模块')
@@ -52,11 +52,37 @@ class TestSearchFdy:
     @allure.story('按身份证号查询辅导员--测试用例')
     @pytest.mark.usefixtures('set_city')
     @pytest.mark.parametrize('number', test_idcard_data)
-    def search_by_idcard(self, driver, log, number):
+    def test_search_by_idcard(self, driver, log, number):
         log.logger.info('测试用例：按身份证号查询辅导员开始执行---------------')
         pf = PageFdy(driver)
         pf.search_by_idcard(number)
         sleep(1)
-        
+        try:
+            fdy_card = driver.find_element(By.XPATH, "//tr[111]//td[3]").text
+            assert fdy_card == number
+            log.logger.info(f"通过身份证号查询辅导员：{number}：查询成功，用例通过")
+        except AssertionError as e:
+            msg = f"通过身份证号查询辅导员：{number}：查询失败，断言失败"
+            log.logger.error(msg)
+            save_error_screenshot("查询辅导员断言失败截图", driver, 'search_fdy_images')
+            raise e
+        except (NoSuchElementException, exceptions.TimeoutException) as e:  # 如果是没找到元素
+            msg = f"元素定位失败，具体错误信息{e}"
+            log.logger.error(msg)
+            print(f"异常原因：{msg}")  # 打印异常原因
+            save_error_screenshot("登录元素定位失败截图", driver, 'search_fdy_images')
+            pytest.fail(reason="元素定位失败")
+        except Exception as e:
+            msg = f"其他错误，具体错误信息{e}"
+            log.logger.error(msg)
+            print(f"异常原因：{msg}")
+            save_error_screenshot("查询辅导员其他错误截图", driver, 'search_fdy_images')
+            raise e
+        finally:
+            log.logger.info(f"测试用例执行结束；按姓名查询辅导员：{number}：查询完成")
+            allure.attach(driver.get_screenshot_as_png(), "用例执行结果截图",
+                          attachment_type=allure.attachment_type.PNG)
+            allure.attach(f"测试用例执行结束；按身份证号查询辅导员：{number}：查询完成")
+
 # if __name__ == '__main__':
 #     pytest.main()

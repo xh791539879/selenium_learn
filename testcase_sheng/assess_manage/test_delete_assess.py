@@ -7,21 +7,21 @@ from selenium.common import NoSuchElementException, exceptions
 from Util.error_screenshot_util import save_error_screenshot
 from pageobject.pagesheng.page_assess import PageAssess
 
-test_name_select_data = ["²âÊÔĞÂÔö¿¼ºË"]
+test_name_select_data = ["æµ‹è¯•æ–°å¢è€ƒæ ¸"]
 
 
 class TestDeleteAssess:
     @pytest.mark.usefixtures('set_sheng')
-    @allure.story('É¾³ı--²âÊÔÓÃÀı')
-    @pytest.mark.parametrize("name_select", test_name_select_data)  # ½«Êı¾İ´«Èë²âÊÔÓÃÀı
-    def test_del_assess(self, name_select, log, driver):  # »ñÈ¡driver¶ÔÏó£¬Ö´ĞĞ²âÊÔÓÃÀıÖ®Ç°±ØĞë³õÊ¼»¯driver
+    @allure.story('åˆ é™¤--æµ‹è¯•ç”¨ä¾‹')
+    @pytest.mark.parametrize("name_select", test_name_select_data)  # å°†æ•°æ®ä¼ å…¥æµ‹è¯•ç”¨ä¾‹
+    def test_del_assess(self, name_select, log, driver):  # è·å–driverå¯¹è±¡ï¼Œæ‰§è¡Œæµ‹è¯•ç”¨ä¾‹ä¹‹å‰å¿…é¡»åˆå§‹åŒ–driver
         """
-        :param name_select:Í¨¹ı'¿¼ºËÃû³Æ'²éÑ¯²¢É¾³ı
-        :param log:ÈÕÖ¾
-        :param driver:Çı¶¯
-        :return:ÎŞ
+        :param name_select:é€šè¿‡'è€ƒæ ¸åç§°'æŸ¥è¯¢å¹¶åˆ é™¤
+        :param log:æ—¥å¿—
+        :param driver:é©±åŠ¨
+        :return:æ— 
         """
-        log.logger.info("²âÊÔÓÃÀı£ºÉ¾³ı¿¼ºË£¬¿ªÊ¼")
+        log.logger.info("æµ‹è¯•ç”¨ä¾‹ï¼šåˆ é™¤è€ƒæ ¸ï¼Œå¼€å§‹")
         sleep(5)
         del_assess = PageAssess(driver)
         title_before, title_after = del_assess.del_table(0)
@@ -29,28 +29,28 @@ class TestDeleteAssess:
         print(title_after)
         try:
             assert title_after != title_before
-            log.logger.info(f"²âÊÔ×Ô¶¯»¯²âÊÔ¿¼ºËÃû³Æ£¬Ãû³ÆÎª{title_before}¿¼ºËÉ¾³ı³É¹¦")
+            log.logger.info(f"æµ‹è¯•è‡ªåŠ¨åŒ–æµ‹è¯•è€ƒæ ¸åç§°ï¼Œåç§°ä¸º{title_before}è€ƒæ ¸åˆ é™¤æˆåŠŸ")
         except AssertionError as e:
-            msg = f"É¾³ı¶ÏÑÔÊ§°Ü£¬ÃûÎª{title_before}µÄ¿¼ºË»¹´æÔÚ"
+            msg = f"åˆ é™¤æ–­è¨€å¤±è´¥ï¼Œåä¸º{title_before}çš„è€ƒæ ¸è¿˜å­˜åœ¨"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")  # ´òÓ¡Òì³£Ô­Òò
-            save_error_screenshot("É¾³ı¿¼ºË¶ÏÑÔÊ§°Ü½ØÍ¼", driver, 'delete_assess_image')
-            raise e  # Å×³öÒì³£,·ñÔòÓÃÀı»á±»ÅĞ¶ÏÎªpass
-        except (NoSuchElementException, exceptions.TimeoutException) as e:  # Èç¹ûÊÇÃ»ÕÒµ½ÔªËØ
-            msg = f"ÔªËØ¶¨Î»Ê§°Ü£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")  # æ‰“å°å¼‚å¸¸åŸå› 
+            save_error_screenshot("åˆ é™¤è€ƒæ ¸æ–­è¨€å¤±è´¥æˆªå›¾", driver, 'delete_assess_image')
+            raise e  # æŠ›å‡ºå¼‚å¸¸,å¦åˆ™ç”¨ä¾‹ä¼šè¢«åˆ¤æ–­ä¸ºpass
+        except (NoSuchElementException, exceptions.TimeoutException) as e:  # å¦‚æœæ˜¯æ²¡æ‰¾åˆ°å…ƒç´ 
+            msg = f"å…ƒç´ å®šä½å¤±è´¥ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")  # ´òÓ¡Òì³£Ô­Òò
-            save_error_screenshot("²éÑ¯ÔªËØ¶¨Î»Ê§°Ü½ØÍ¼", driver, 'delete_assess_image')
-            pytest.fail(reason="ÔªËØ¶¨Î»Ê§°Ü")
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")  # æ‰“å°å¼‚å¸¸åŸå› 
+            save_error_screenshot("æŸ¥è¯¢å…ƒç´ å®šä½å¤±è´¥æˆªå›¾", driver, 'delete_assess_image')
+            pytest.fail(reason="å…ƒç´ å®šä½å¤±è´¥")
         except Exception as e:
-            msg = f"ÆäËû´íÎó£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+            msg = f"å…¶ä»–é”™è¯¯ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")
-            save_error_screenshot("²éÑ¯ÆäËû´íÎó½ØÍ¼", driver, 'delete_assess_image')
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")
+            save_error_screenshot("æŸ¥è¯¢å…¶ä»–é”™è¯¯æˆªå›¾", driver, 'delete_assess_image')
             raise e
         finally:
-            log.logger.info(f"²âÊÔÓÃÀı½áÊø£¬¿¼ºËÄê¶È£º{title_before}É¾³ı²Ù×÷²âÊÔÍê³É")
-            allure.attach(driver.get_screenshot_as_png(), "ÓÃÀıÖ´ĞĞ½á¹û½ØÍ¼",
-                          attachment_type=allure.attachment_type.PNG)  # ½«ÓÃÀı×îÖÕ½ØÍ¼´òÓ¡µ½allure±¨¸æ£¬ÎŞÂÛÊ§°ÜÓë·ñ¶¼´òÓ¡
-            allure.attach(f"É¾³ıµÄ¿¼ºËÃû³ÆÎª£º{title_before},Êµ¼Ê²éÑ¯µ½µÄ½á¹ûÎª£º{title_after}",
-                          "ÓÃÀıÖ´ĞĞ½á¹ûÃèÊö")  # ½«Êµ¼Ê½á¹û´òÓ¡µ½allure±¨¸æ
+            log.logger.info(f"æµ‹è¯•ç”¨ä¾‹ç»“æŸï¼Œè€ƒæ ¸å¹´åº¦ï¼š{title_before}åˆ é™¤æ“ä½œæµ‹è¯•å®Œæˆ")
+            allure.attach(driver.get_screenshot_as_png(), "ç”¨ä¾‹æ‰§è¡Œç»“æœæˆªå›¾",
+                          attachment_type=allure.attachment_type.PNG)  # å°†ç”¨ä¾‹æœ€ç»ˆæˆªå›¾æ‰“å°åˆ°allureæŠ¥å‘Šï¼Œæ— è®ºå¤±è´¥ä¸å¦éƒ½æ‰“å°
+            allure.attach(f"åˆ é™¤çš„è€ƒæ ¸åç§°ä¸ºï¼š{title_before},å®é™…æŸ¥è¯¢åˆ°çš„ç»“æœä¸ºï¼š{title_after}",
+                          "ç”¨ä¾‹æ‰§è¡Œç»“æœæè¿°")  # å°†å®é™…ç»“æœæ‰“å°åˆ°allureæŠ¥å‘Š

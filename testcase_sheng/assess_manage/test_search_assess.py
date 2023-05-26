@@ -8,115 +8,115 @@ from Util.error_screenshot_util import save_error_screenshot
 from common.common import TableDataExtractor
 from pageobject.pagesheng.page_assess import PageAssess
 
-# ²âÊÔÊı¾İ£¬½ö°üÀ¨¿¼ºËÃû³Æ
-test_name_select_data = ["²âÊÔĞÂÔö¿¼ºË"]
-# ²âÊÔÊı¾İ£¬½ö°üÀ¨¿¼ºËÄê¶È
+# æµ‹è¯•æ•°æ®ï¼Œä»…åŒ…æ‹¬è€ƒæ ¸åç§°
+test_name_select_data = ["æµ‹è¯•æ–°å¢è€ƒæ ¸"]
+# æµ‹è¯•æ•°æ®ï¼Œä»…åŒ…æ‹¬è€ƒæ ¸å¹´åº¦
 test_year_select_data = ["2023"]
 
 
 class TestSearchAssess:
 
-    # Í¨¹ıfixtureÀ´ÉèÖÃÇ°ÖÃÌõ¼ş£¬¼´×Ô¶¯µÇÂ¼ÏµÍ³£¬²¢½øÈëÖ¸¶¨Ò³Ãæ
+    # é€šè¿‡fixtureæ¥è®¾ç½®å‰ç½®æ¡ä»¶ï¼Œå³è‡ªåŠ¨ç™»å½•ç³»ç»Ÿï¼Œå¹¶è¿›å…¥æŒ‡å®šé¡µé¢
     @pytest.mark.usefixtures('set_sheng')
-    # ÕâÊÇallureÖĞµÄ²âÊÔÓÃÀı·ÖÀàºÍ±êÌâ
-    @allure.story('°´Ãû³Æ²éÑ¯¿¼ºË--²âÊÔÓÃÀı')
-    # parametrize×°ÊÎÆ÷½«²âÊÔÊı¾İ´«Èë²âÊÔÓÃÀı
+    # è¿™æ˜¯allureä¸­çš„æµ‹è¯•ç”¨ä¾‹åˆ†ç±»å’Œæ ‡é¢˜
+    @allure.story('æŒ‰åç§°æŸ¥è¯¢è€ƒæ ¸--æµ‹è¯•ç”¨ä¾‹')
+    # parametrizeè£…é¥°å™¨å°†æµ‹è¯•æ•°æ®ä¼ å…¥æµ‹è¯•ç”¨ä¾‹
     @pytest.mark.parametrize("name_select", test_name_select_data)
-    def test_name_select_assess(self, name_select, log, driver):  # »ñÈ¡driver¶ÔÏó£¬Ö´ĞĞ²âÊÔÓÃÀıÖ®Ç°±ØĞë³õÊ¼»¯driver
+    def test_name_select_assess(self, name_select, log, driver):  # è·å–driverå¯¹è±¡ï¼Œæ‰§è¡Œæµ‹è¯•ç”¨ä¾‹ä¹‹å‰å¿…é¡»åˆå§‹åŒ–driver
         """
-        :param name_select:°´ÕÕ'¿¼ºËÃû³Æ'²éÑ¯
+        :param name_select:æŒ‰ç…§'è€ƒæ ¸åç§°'æŸ¥è¯¢
         :param log:
         :param driver:
         :return:
         """
 
-        # ¼ÇÂ¼ÈÕÖ¾
-        log.logger.info("²âÊÔÓÃÀı£º°´Ãû³Æ²éÑ¯¿¼ºË£¬¿ªÊ¼")
+        # è®°å½•æ—¥å¿—
+        log.logger.info("æµ‹è¯•ç”¨ä¾‹ï¼šæŒ‰åç§°æŸ¥è¯¢è€ƒæ ¸ï¼Œå¼€å§‹")
 
-        # µÈ´ıÒ³Ãæ¼ÓÔØÍê³É
+        # ç­‰å¾…é¡µé¢åŠ è½½å®Œæˆ
         sleep(5)
 
-        # ´´½¨PageAssess¶ÔÏó£¬µ÷ÓÃÏàÓ¦µÄ·½·¨½øĞĞ²âÊÔ²Ù×÷
+        # åˆ›å»ºPageAssesså¯¹è±¡ï¼Œè°ƒç”¨ç›¸åº”çš„æ–¹æ³•è¿›è¡Œæµ‹è¯•æ“ä½œ
         select = PageAssess(driver)
         select.select_by_name(name_select)
         sleep(3)
 
-        # ¶¨Î»µ½²éÑ¯½á¹û±í¸ñ£¬²¢Í¨¹ıTableDataExtractor»ñÈ¡±í¸ñÖĞÖ¸¶¨ÁĞµÄÊı¾İ
+        # å®šä½åˆ°æŸ¥è¯¢ç»“æœè¡¨æ ¼ï¼Œå¹¶é€šè¿‡TableDataExtractorè·å–è¡¨æ ¼ä¸­æŒ‡å®šåˆ—çš„æ•°æ®
         element = driver.find_element(By.CLASS_NAME, "ant-table-tbody")
         result_list = TableDataExtractor.get_column_data(element, 2)
         print(result_list)
 
         b = ""
         for b in result_list:
-            print('ÁĞ±íÊı¾İ±éÀúÍê³É')
+            print('åˆ—è¡¨æ•°æ®éå†å®Œæˆ')
 
         try:
-            # ¶Ô»ñÈ¡µÄÊı¾İ½øĞĞ¶ÏÑÔ±È¶Ô£¬ÑéÖ¤²éÑ¯½á¹ûÊÇ·ñ·ûºÏÔ¤ÆÚ
-            assert name_select in b, f"{b}²»°üº¬{name_select}"
-            log.logger.info("¿¼ºËÃû³Æ{0}²éÑ¯³É¹¦".format(name_select))
+            # å¯¹è·å–çš„æ•°æ®è¿›è¡Œæ–­è¨€æ¯”å¯¹ï¼ŒéªŒè¯æŸ¥è¯¢ç»“æœæ˜¯å¦ç¬¦åˆé¢„æœŸ
+            assert name_select in b, f"{b}ä¸åŒ…å«{name_select}"
+            log.logger.info("è€ƒæ ¸åç§°{0}æŸ¥è¯¢æˆåŠŸ".format(name_select))
         except AssertionError as e:
-            # Èç¹û½á¹û²»·û£¬ÔòÅ×³öÒì³££¬Í¬Ê±±£´æÏÖ³¡½ØÍ¼£¬ÓÃÀı»á±»ÅĞ¶ÏÎªÊ§°Ü
-            msg = f"²éÑ¯µÄ¿¼ºËÃû³ÆÎª£º{name_select},Êµ¼Ê²éÑ¯µ½µÄ½á¹ûÎª£º{result_list}"
+            # å¦‚æœç»“æœä¸ç¬¦ï¼Œåˆ™æŠ›å‡ºå¼‚å¸¸ï¼ŒåŒæ—¶ä¿å­˜ç°åœºæˆªå›¾ï¼Œç”¨ä¾‹ä¼šè¢«åˆ¤æ–­ä¸ºå¤±è´¥
+            msg = f"æŸ¥è¯¢çš„è€ƒæ ¸åç§°ä¸ºï¼š{name_select},å®é™…æŸ¥è¯¢åˆ°çš„ç»“æœä¸ºï¼š{result_list}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")
-            save_error_screenshot("²éÑ¯ÁĞ±í¶ÏÑÔÊ§°Ü½ØÍ¼", driver, 'select_assess_image')
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")
+            save_error_screenshot("æŸ¥è¯¢åˆ—è¡¨æ–­è¨€å¤±è´¥æˆªå›¾", driver, 'select_assess_image')
             raise e
         finally:
-            # ¼ÇÂ¼ÈÕÖ¾£¬²âÊÔÓÃÀıÖ´ĞĞ½áÊø
-            log.logger.info(f"²âÊÔÓÃÀı½áÊø£¬¿¼ºËÃû³Æ£º{name_select}²éÑ¯Íê³É")
-            allure.attach(driver.get_screenshot_as_png(), "ÓÃÀıÖ´ĞĞ½á¹û½ØÍ¼",
-                          attachment_type=allure.attachment_type.PNG)  # ½«ÓÃÀı×îÖÕ½ØÍ¼´òÓ¡µ½allure±¨¸æ£¬ÎŞÂÛÊ§°ÜÓë·ñ¶¼´òÓ¡
-            allure.attach(f"²éÑ¯µÄ¿¼ºËÄê¶ÈÎª£º{name_select},Êµ¼Ê²éÑ¯µ½µÄ½á¹ûÎª£º{result_list}",
-                          "ÓÃÀıÖ´ĞĞ½á¹ûÃèÊö")  # ½«Êµ¼Ê½á¹û´òÓ¡µ½allure±¨¸æ
+            # è®°å½•æ—¥å¿—ï¼Œæµ‹è¯•ç”¨ä¾‹æ‰§è¡Œç»“æŸ
+            log.logger.info(f"æµ‹è¯•ç”¨ä¾‹ç»“æŸï¼Œè€ƒæ ¸åç§°ï¼š{name_select}æŸ¥è¯¢å®Œæˆ")
+            allure.attach(driver.get_screenshot_as_png(), "ç”¨ä¾‹æ‰§è¡Œç»“æœæˆªå›¾",
+                          attachment_type=allure.attachment_type.PNG)  # å°†ç”¨ä¾‹æœ€ç»ˆæˆªå›¾æ‰“å°åˆ°allureæŠ¥å‘Šï¼Œæ— è®ºå¤±è´¥ä¸å¦éƒ½æ‰“å°
+            allure.attach(f"æŸ¥è¯¢çš„è€ƒæ ¸å¹´åº¦ä¸ºï¼š{name_select},å®é™…æŸ¥è¯¢åˆ°çš„ç»“æœä¸ºï¼š{result_list}",
+                          "ç”¨ä¾‹æ‰§è¡Œç»“æœæè¿°")  # å°†å®é™…ç»“æœæ‰“å°åˆ°allureæŠ¥å‘Š
 
     @pytest.mark.usefixtures('set_sheng')
-    @allure.story('°´Äê¶È²éÑ¯¿¼ºË--²âÊÔÓÃÀı')
-    @pytest.mark.parametrize("year_select", test_year_select_data)  # ½«Êı¾İ´«Èë²âÊÔÓÃÀı
+    @allure.story('æŒ‰å¹´åº¦æŸ¥è¯¢è€ƒæ ¸--æµ‹è¯•ç”¨ä¾‹')
+    @pytest.mark.parametrize("year_select", test_year_select_data)  # å°†æ•°æ®ä¼ å…¥æµ‹è¯•ç”¨ä¾‹
     def test_year_select_assess(self, year_select, log, driver):
         """
-        :param year_select:°´¡®¿¼ºËÄê¶È¡¯²éÑ¯
+        :param year_select:æŒ‰â€˜è€ƒæ ¸å¹´åº¦â€™æŸ¥è¯¢
         :param log:
         :param driver:
         :return:
         """
-        log.logger.info("²âÊÔÓÃÀı£º°´Äê¶È²éÑ¯¿¼ºË£¬¿ªÊ¼")
+        log.logger.info("æµ‹è¯•ç”¨ä¾‹ï¼šæŒ‰å¹´åº¦æŸ¥è¯¢è€ƒæ ¸ï¼Œå¼€å§‹")
         sleep(5)
         select = PageAssess(driver)
         select.select_by_year(year_select)
         sleep(3)
 
-        # ±í¸ñ¶¨Î»Â·¾¶
+        # è¡¨æ ¼å®šä½è·¯å¾„
         element = driver.find_element(By.CLASS_NAME, "ant-table-tbody")
         result_list = TableDataExtractor.get_column_data(element, 1)
         print(result_list)
-        log.logger.info(f"²éÑ¯µ½µÄËùÓĞÄê¶ÈÎª{result_list}")
+        log.logger.info(f"æŸ¥è¯¢åˆ°çš„æ‰€æœ‰å¹´åº¦ä¸º{result_list}")
         b = ""
         for b in result_list:
-            print('ÁĞ±íÊı¾İ±éÀúÍê³É')
+            print('åˆ—è¡¨æ•°æ®éå†å®Œæˆ')
         try:
-            assert year_select in b, f"{b}²»°üº¬{year_select}"
-            log.logger.info(f"¿¼ºËÄê¶È{year_select}²éÑ¯³É¹¦")
+            assert year_select in b, f"{b}ä¸åŒ…å«{year_select}"
+            log.logger.info(f"è€ƒæ ¸å¹´åº¦{year_select}æŸ¥è¯¢æˆåŠŸ")
         except AssertionError as e:
-            msg = f"²éÑ¯µÄ¿¼ºËÄê¶ÈÎª£º{year_select},Êµ¼Ê²éÑ¯µ½µÄ½á¹ûÎª£º{result_list}"
+            msg = f"æŸ¥è¯¢çš„è€ƒæ ¸å¹´åº¦ä¸ºï¼š{year_select},å®é™…æŸ¥è¯¢åˆ°çš„ç»“æœä¸ºï¼š{result_list}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")  # ´òÓ¡Òì³£Ô­Òò
-            save_error_screenshot("²éÑ¯ÁĞ±í¶ÏÑÔÊ§°Ü½ØÍ¼", driver, 'select_assess_image')
-            raise e  # Å×³öÒì³£,·ñÔòÓÃÀı»á±»ÅĞ¶ÏÎªpass
-        except (NoSuchElementException, exceptions.TimeoutException) as e:  # Èç¹ûÊÇÃ»ÕÒµ½ÔªËØ
-            msg = f"ÔªËØ¶¨Î»Ê§°Ü£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")  # æ‰“å°å¼‚å¸¸åŸå› 
+            save_error_screenshot("æŸ¥è¯¢åˆ—è¡¨æ–­è¨€å¤±è´¥æˆªå›¾", driver, 'select_assess_image')
+            raise e  # æŠ›å‡ºå¼‚å¸¸,å¦åˆ™ç”¨ä¾‹ä¼šè¢«åˆ¤æ–­ä¸ºpass
+        except (NoSuchElementException, exceptions.TimeoutException) as e:  # å¦‚æœæ˜¯æ²¡æ‰¾åˆ°å…ƒç´ 
+            msg = f"å…ƒç´ å®šä½å¤±è´¥ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")  # ´òÓ¡Òì³£Ô­Òò
-            save_error_screenshot("²éÑ¯ÔªËØ¶¨Î»Ê§°Ü½ØÍ¼", driver, 'select_assess_image')
-            pytest.fail(reason="ÔªËØ¶¨Î»Ê§°Ü")
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")  # æ‰“å°å¼‚å¸¸åŸå› 
+            save_error_screenshot("æŸ¥è¯¢å…ƒç´ å®šä½å¤±è´¥æˆªå›¾", driver, 'select_assess_image')
+            pytest.fail(reason="å…ƒç´ å®šä½å¤±è´¥")
         except Exception as e:
-            msg = f"ÆäËû´íÎó£¬¾ßÌå´íÎóĞÅÏ¢{e}"
+            msg = f"å…¶ä»–é”™è¯¯ï¼Œå…·ä½“é”™è¯¯ä¿¡æ¯{e}"
             log.logger.error(msg)
-            print(f"Òì³£Ô­Òò£º{msg}")
-            save_error_screenshot("²éÑ¯ÆäËû´íÎó½ØÍ¼", driver, 'select_assess_image')
+            print(f"å¼‚å¸¸åŸå› ï¼š{msg}")
+            save_error_screenshot("æŸ¥è¯¢å…¶ä»–é”™è¯¯æˆªå›¾", driver, 'select_assess_image')
             raise e
         finally:
-            log.logger.info(f"²âÊÔÓÃÀı½áÊø£¬¿¼ºËÄê¶È£º{year_select}²éÑ¯Íê³É")
-            allure.attach(driver.get_screenshot_as_png(), "ÓÃÀıÖ´ĞĞ½á¹û½ØÍ¼",
-                          attachment_type=allure.attachment_type.PNG)  # ½«ÓÃÀı×îÖÕ½ØÍ¼´òÓ¡µ½allure±¨¸æ£¬ÎŞÂÛÊ§°ÜÓë·ñ¶¼´òÓ¡
-            allure.attach(f"²éÑ¯µÄ¿¼ºËÄê¶ÈÎª£º{year_select},Êµ¼Ê²éÑ¯µ½µÄ½á¹ûÎª£º{result_list}",
-                          "ÓÃÀıÖ´ĞĞ½á¹ûÃèÊö")  # ½«Êµ¼Ê½á¹û´òÓ¡µ½allure±¨¸æ
+            log.logger.info(f"æµ‹è¯•ç”¨ä¾‹ç»“æŸï¼Œè€ƒæ ¸å¹´åº¦ï¼š{year_select}æŸ¥è¯¢å®Œæˆ")
+            allure.attach(driver.get_screenshot_as_png(), "ç”¨ä¾‹æ‰§è¡Œç»“æœæˆªå›¾",
+                          attachment_type=allure.attachment_type.PNG)  # å°†ç”¨ä¾‹æœ€ç»ˆæˆªå›¾æ‰“å°åˆ°allureæŠ¥å‘Šï¼Œæ— è®ºå¤±è´¥ä¸å¦éƒ½æ‰“å°
+            allure.attach(f"æŸ¥è¯¢çš„è€ƒæ ¸å¹´åº¦ä¸ºï¼š{year_select},å®é™…æŸ¥è¯¢åˆ°çš„ç»“æœä¸ºï¼š{result_list}",
+                          "ç”¨ä¾‹æ‰§è¡Œç»“æœæè¿°")  # å°†å®é™…ç»“æœæ‰“å°åˆ°allureæŠ¥å‘Š
